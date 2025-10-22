@@ -23,7 +23,7 @@
             --shadow-sm: 0 2px 10px rgba(0,0,0,0.08);
             --shadow-md: 0 2px 15px rgba(0,0,0,0.1);
             --shadow-lg: 0 4px 20px rgba(0,0,0,0.15);
-            --navbar-height: 60px;
+            --navbar-height: 56px;
             --accent-gradient: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
@@ -47,99 +47,174 @@
             --shadow-lg: 0 4px 20px rgba(0,0,0,0.5);
         }
 
+        @keyframes rainbowFlow {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes rainbow3DShine {
+            0%, 100% { 
+                filter: brightness(1) drop-shadow(0 4px 8px rgba(255,0,0,0.3));
+            }
+            16% { 
+                filter: brightness(1.1) drop-shadow(0 4px 8px rgba(255,165,0,0.3));
+            }
+            33% { 
+                filter: brightness(1.2) drop-shadow(0 4px 8px rgba(255,255,0,0.3));
+            }
+            50% { 
+                filter: brightness(1.15) drop-shadow(0 4px 8px rgba(0,255,0,0.3));
+            }
+            66% { 
+                filter: brightness(1.1) drop-shadow(0 4px 8px rgba(0,0,255,0.3));
+            }
+            83% { 
+                filter: brightness(1.05) drop-shadow(0 4px 8px rgba(75,0,130,0.3));
+            }
+        }
+
         .navbar {
             position: fixed;
             top: 0;
             left: 0;
             right: 0;
             height: var(--navbar-height);
-            background: #000000;
-            box-shadow: var(--shadow-md);
-            padding: 0 15px;
-            display: flex;
-            justify-content: space-between;
+            background: linear-gradient(
+                90deg,
+                #ff0000 0%,
+                #ff7f00 14.28%,
+                #ffff00 28.56%,
+                #00ff00 42.84%,
+                #0000ff 57.12%,
+                #4b0082 71.4%,
+                #9400d3 85.68%,
+                #ff0000 100%
+            );
+            background-size: 200% 100%;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3), 0 0 40px rgba(147,0,211,0.4);
+            padding: 0 12px;
+            display: grid;
+            grid-template-columns: auto 1fr auto;
             align-items: center;
+            gap: 12px;
             z-index: 1000;
+            animation: rainbowFlow 8s ease infinite, rainbow3DShine 4s ease-in-out infinite;
+            transform-style: preserve-3d;
+            overflow: visible;
+        }
+
+        .navbar::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(255,255,255,0.2) 0%,
+                rgba(255,255,255,0) 50%,
+                rgba(0,0,0,0.2) 100%
+            );
+            pointer-events: none;
+            border-radius: inherit;
         }
 
         .navbar-left {
             color: white;
-            font-size: 20px;
+            font-size: 16px;
             font-weight: bold;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
-            letter-spacing: 0.5px;
+            text-shadow: 2px 2px 6px rgba(0,0,0,0.5), 0 0 10px rgba(255,255,255,0.3);
+            letter-spacing: 0.3px;
             flex-shrink: 0;
+            position: relative;
+            z-index: 2;
+            white-space: nowrap;
+            min-width: 0;
         }
 
         .navbar-center {
             display: flex;
             align-items: center;
+            justify-content: center;
+            position: relative;
+            z-index: 2;
         }
 
         .theme-toggle {
-            background: rgba(255, 255, 255, 0.2);
-            border: 2px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.25);
+            border: 2px solid rgba(255, 255, 255, 0.5);
             border-radius: 50%;
-            width: 40px;
-            height: 40px;
+            width: 36px;
+            height: 36px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             transition: all 0.3s ease;
             backdrop-filter: blur(10px);
+            flex-shrink: 0;
         }
 
         .theme-toggle:hover {
-            background: rgba(255, 255, 255, 0.3);
-            transform: scale(1.05);
+            background: rgba(255, 255, 255, 0.35);
+            transform: scale(1.1) rotateZ(15deg);
         }
 
         .theme-toggle i {
-            font-size: 18px;
+            font-size: 16px;
             color: white;
+            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.4));
         }
 
         .navbar-right {
             display: flex;
-            gap: 20px;
+            gap: 10px;
             align-items: center;
+            justify-content: flex-end;
+            position: relative;
+            z-index: 2;
         }
 
         .nav-item {
             display: flex;
             flex-direction: column;
             align-items: center;
+            justify-content: center;
             gap: 2px;
             cursor: pointer;
             color: white;
             transition: all 0.3s;
             text-decoration: none;
             position: relative;
-            padding: 5px 8px;
+            padding: 6px 8px;
             border-radius: 8px;
             min-width: 50px;
+            flex-shrink: 0;
+            height: 48px;
         }
 
         .nav-item:hover {
-            background: rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.25);
             transform: translateY(-2px);
         }
 
         .nav-item.active {
-            background: rgba(255, 255, 255, 0.25);
-            box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+            background: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
         }
 
         .nav-item i {
-            font-size: 20px;
-            filter: drop-shadow(1px 1px 2px rgba(0,0,0,0.3));
+            font-size: 18px;
+            filter: drop-shadow(1px 1px 3px rgba(0,0,0,0.4));
         }
 
         .nav-item span {
-            font-size: 11px;
+            font-size: 9px;
             font-weight: 600;
-            text-shadow: 1px 1px 2px rgba(0,0,0,0.3);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+            white-space: nowrap;
         }
 
         .search-toggle-btn {
@@ -299,11 +374,11 @@
             left: 50%;
             transform: translateX(-50%);
             background: var(--bg-secondary);
-            padding: 8px 25px;
+            padding: 7px 22px;
             border-radius: 0 0 12px 12px;
             box-shadow: var(--shadow-sm);
             z-index: 999;
-            font-size: 16px;
+            font-size: 15px;
             font-weight: bold;
             color: var(--text-primary);
             transition: all 0.3s ease;
@@ -316,8 +391,8 @@
 
         .badge {
             position: absolute;
-            top: -3px;
-            right: -8px;
+            top: 2px;
+            right: 2px;
             background: #ff4757;
             color: white;
             border-radius: 10px;
@@ -326,6 +401,7 @@
             font-weight: bold;
             box-shadow: 0 2px 4px rgba(255, 71, 87, 0.4);
             animation: pulse 2s infinite;
+            z-index: 10;
         }
 
         @keyframes pulse {
@@ -340,7 +416,7 @@
         .menu-content {
             display: none;
             position: absolute;
-            top: 55px;
+            top: calc(100% + 8px);
             right: 0;
             background: var(--bg-secondary);
             border-radius: 12px;
@@ -348,6 +424,7 @@
             min-width: 220px;
             overflow: hidden;
             animation: slideDown 0.3s ease;
+            z-index: 9999;
         }
 
         .menu-content.show {
@@ -581,6 +658,29 @@
             box-shadow: 0 4px 12px rgba(102, 126, 234, 0.5);
         }
 
+        @keyframes reaction3DPop {
+            0% {
+                transform: scale(1) rotateY(0deg) rotateX(0deg);
+            }
+            25% {
+                transform: scale(1.3) rotateY(15deg) rotateX(15deg);
+            }
+            50% {
+                transform: scale(1.5) rotateY(-15deg) rotateX(-15deg);
+            }
+            75% {
+                transform: scale(1.3) rotateY(10deg) rotateX(10deg);
+            }
+            100% {
+                transform: scale(1) rotateY(0deg) rotateX(0deg);
+            }
+        }
+
+        @keyframes colorPulse {
+            0%, 100% { filter: brightness(1) saturate(1); }
+            50% { filter: brightness(1.3) saturate(1.5); }
+        }
+
         .reactions {
             display: flex;
             gap: 10px;
@@ -594,25 +694,58 @@
             background: none;
             border: none;
             padding: 8px;
-            border-radius: 6px;
+            border-radius: 8px;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            font-size: 16px;
-            transition: all 0.3s;
+            font-size: 17px;
+            transition: all 0.4s cubic-bezier(0.68, -0.55, 0.265, 1.55);
             color: var(--text-secondary);
+            transform-style: preserve-3d;
+            position: relative;
         }
 
         .reaction-btn:hover {
-            background: rgba(102, 126, 234, 0.1);
-            transform: scale(1.1);
+            background: rgba(102, 126, 234, 0.08);
+            transform: scale(1.15) translateZ(10px);
+        }
+
+        .reaction-btn:active {
+            animation: reaction3DPop 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
         }
 
         .reaction-btn.active {
-            background: rgba(102, 126, 234, 0.15);
-            color: #667eea;
+            transform: scale(1.1) translateZ(5px);
+        }
+
+        .reaction-btn.active.like-active {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.5);
+            animation: colorPulse 2s ease-in-out infinite;
+        }
+
+        .reaction-btn.active.love-active {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a6f 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.5);
+            animation: colorPulse 2s ease-in-out infinite;
+        }
+
+        .reaction-btn.active.rire-active {
+            background: linear-gradient(135deg, #ffd93d 0%, #ffb800 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 217, 61, 0.5);
+            animation: colorPulse 2s ease-in-out infinite;
+        }
+
+        .reaction-btn.active.colere-active {
+            background: linear-gradient(135deg, #ff5252 0%, #d32f2f 100%);
+            color: white;
+            box-shadow: 0 4px 15px rgba(255, 82, 82, 0.5);
+            animation: colorPulse 2s ease-in-out infinite;
         }
 
         .reaction-btn span {
@@ -921,41 +1054,44 @@
 
         @media (max-width: 768px) {
             :root {
-                --navbar-height: 55px;
+                --navbar-height: 52px;
             }
 
             .navbar {
-                padding: 0 10px;
+                padding: 0 8px;
+                gap: 8px;
             }
 
             .navbar-left {
-                font-size: 16px;
+                font-size: 14px;
+                letter-spacing: 0.2px;
             }
 
             .navbar-right {
-                gap: 12px;
+                gap: 6px;
             }
 
             .nav-item {
-                padding: 4px 6px;
-                min-width: 45px;
+                padding: 4px 5px;
+                min-width: 42px;
+                height: 44px;
             }
 
             .nav-item span {
-                font-size: 10px;
+                font-size: 8px;
             }
 
             .nav-item i {
-                font-size: 18px;
+                font-size: 16px;
             }
 
             .theme-toggle {
-                width: 36px;
-                height: 36px;
+                width: 34px;
+                height: 34px;
             }
 
             .theme-toggle i {
-                font-size: 16px;
+                font-size: 15px;
             }
 
             .spa-container {
@@ -964,8 +1100,8 @@
             }
 
             .page-title {
-                font-size: 14px;
-                padding: 6px 20px;
+                font-size: 13px;
+                padding: 5px 18px;
                 top: calc(var(--navbar-height) - 2px);
             }
 
@@ -1004,8 +1140,10 @@
             }
 
             .badge {
-                font-size: 8px;
-                padding: 1px 4px;
+                font-size: 7px;
+                padding: 1px 3px;
+                right: 0px;
+                top: 0px;
             }
 
             .menu-content {
@@ -1053,6 +1191,87 @@
 
             .share-options {
                 grid-template-columns: repeat(3, 1fr);
+            }
+        }
+
+        @media (max-width: 380px) {
+            .navbar {
+                padding: 0 6px;
+                gap: 6px;
+            }
+
+            .navbar-left {
+                font-size: 12px;
+            }
+
+            .navbar-right {
+                gap: 4px;
+            }
+
+            .nav-item {
+                padding: 3px 4px;
+                min-width: 38px;
+                height: 42px;
+            }
+
+            .nav-item span {
+                font-size: 7px;
+            }
+
+            .nav-item i {
+                font-size: 15px;
+            }
+
+            .theme-toggle {
+                width: 32px;
+                height: 32px;
+            }
+
+            .theme-toggle i {
+                font-size: 14px;
+            }
+
+            .badge {
+                font-size: 7px;
+                padding: 1px 3px;
+            }
+        }
+
+        @media (max-width: 340px) {
+            .navbar {
+                padding: 0 4px;
+                gap: 4px;
+            }
+
+            .navbar-left {
+                font-size: 11px;
+            }
+
+            .navbar-right {
+                gap: 3px;
+            }
+
+            .nav-item {
+                padding: 2px 3px;
+                min-width: 35px;
+                height: 40px;
+            }
+
+            .nav-item span {
+                font-size: 7px;
+            }
+
+            .nav-item i {
+                font-size: 14px;
+            }
+
+            .theme-toggle {
+                width: 30px;
+                height: 30px;
+            }
+
+            .theme-toggle i {
+                font-size: 13px;
             }
         }
     </style>
@@ -1179,6 +1398,7 @@
         let allArticles = [];
         let isSearching = false;
         let currentPage = 'home';
+        let userReactions = {};
 
         const themeToggle = document.getElementById('theme-toggle');
         const themeIcon = document.getElementById('theme-icon');
@@ -1295,6 +1515,7 @@
                 loadNotificationCount();
                 loadMessageCount();
                 setupRealTimeUpdates();
+                await loadUserReactions();
             }
             loadArticles();
             initNavigation();
@@ -1309,6 +1530,33 @@
                 if (userProfile.role === 'admin') {
                     document.getElementById('admin-item').style.display = 'flex';
                 }
+            } else {
+                document.getElementById('login-item').style.display = 'flex';
+                document.getElementById('profile-item').style.display = 'none';
+                document.getElementById('logout-item').style.display = 'none';
+                document.getElementById('admin-item').style.display = 'none';
+            }
+        }
+
+        async function loadUserReactions() {
+            if (!currentUser) return;
+            try {
+                const { data, error } = await supabase
+                    .from('article_reactions')
+                    .select('article_id, reaction_type')
+                    .eq('user_id', currentUser.id);
+                
+                if (error) throw error;
+                
+                userReactions = {};
+                data.forEach(reaction => {
+                    if (!userReactions[reaction.article_id]) {
+                        userReactions[reaction.article_id] = [];
+                    }
+                    userReactions[reaction.article_id].push(reaction.reaction_type);
+                });
+            } catch (error) {
+                console.error('Erreur chargement réactions:', error);
             }
         }
 
@@ -1349,9 +1597,15 @@
                 }
             });
 
-            document.getElementById('logout-item').addEventListener('click', async function() {
-                await supabase.auth.signOut();
-                window.location.reload();
+            document.getElementById('logout-item').addEventListener('click', async function(e) {
+                e.preventDefault();
+                try {
+                    await supabase.auth.signOut();
+                    window.location.href = 'connexion.html';
+                } catch (error) {
+                    console.error('Erreur déconnexion:', error);
+                    window.location.href = 'connexion.html';
+                }
             });
         }
 
@@ -1416,6 +1670,7 @@
                     table: 'article_reactions' 
                 }, (payload) => {
                     console.log('Réaction changée:', payload);
+                    loadUserReactions();
                     loadArticles();
                 })
                 .subscribe();
@@ -1537,6 +1792,12 @@
 
             const commentCountBadge = article.comment_count > 0 ? `<span class="comment-count-badge">${article.comment_count}</span>` : '';
 
+            const userArticleReactions = userReactions[article.article_id] || [];
+            const likeActive = userArticleReactions.includes('like') ? 'active like-active' : '';
+            const loveActive = userArticleReactions.includes('love') ? 'active love-active' : '';
+            const rireActive = userArticleReactions.includes('rire') ? 'active rire-active' : '';
+            const colereActive = userArticleReactions.includes('colere') ? 'active colere-active' : '';
+
             card.innerHTML = `
                 <div class="article-header">
                     <div class="avatar">${initials}</div>
@@ -1555,16 +1816,16 @@
                     ${linksHTML}
                 </div>
                 <div class="reactions">
-                    <button class="reaction-btn" onclick="handleReaction('${article.article_id}', 'like')">
+                    <button class="reaction-btn ${likeActive}" onclick="handleReaction('${article.article_id}', 'like')">
                         <i class="fas fa-thumbs-up"></i><span>${article.reaction_like || 0}</span>
                     </button>
-                    <button class="reaction-btn" onclick="handleReaction('${article.article_id}', 'love')">
+                    <button class="reaction-btn ${loveActive}" onclick="handleReaction('${article.article_id}', 'love')">
                         <i class="fas fa-heart"></i><span>${article.reaction_love || 0}</span>
                     </button>
-                    <button class="reaction-btn" onclick="handleReaction('${article.article_id}', 'rire')">
+                    <button class="reaction-btn ${rireActive}" onclick="handleReaction('${article.article_id}', 'rire')">
                         <i class="fas fa-laugh"></i><span>${article.reaction_rire || 0}</span>
                     </button>
-                    <button class="reaction-btn" onclick="handleReaction('${article.article_id}', 'colere')">
+                    <button class="reaction-btn ${colereActive}" onclick="handleReaction('${article.article_id}', 'colere')">
                         <i class="fas fa-angry"></i><span>${article.reaction_colere || 0}</span>
                     </button>
                 </div>
@@ -1748,6 +2009,10 @@
                         .from('article_reactions')
                         .delete()
                         .eq('reaction_id', existing.reaction_id);
+                    
+                    if (userReactions[articleId]) {
+                        userReactions[articleId] = userReactions[articleId].filter(r => r !== reactionType);
+                    }
                 } else {
                     await supabase
                         .from('article_reactions')
@@ -1756,7 +2021,14 @@
                             user_id: currentUser.id, 
                             reaction_type: reactionType 
                         });
+                    
+                    if (!userReactions[articleId]) {
+                        userReactions[articleId] = [];
+                    }
+                    userReactions[articleId].push(reactionType);
                 }
+                
+                await loadArticles();
             } catch (error) {
                 console.error('Erreur réaction:', error);
             }
@@ -1860,4 +2132,4 @@
         }, 30000);
     </script>
 </body>
-    </html>
+</html>
