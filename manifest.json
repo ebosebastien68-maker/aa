@@ -1,0 +1,21 @@
+{
+  "name": "ConnectPro",
+  "short_name": "ConnectPro",
+  "description": "La plateforme de messagerie professionnelle ConnectPro",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#007aff",
+  "icons": [
+    {
+      "src": "connect_pro.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "connect_pro.png",
+      "sizes": "512x512",
+      "type": "image/png"
+    }
+  ]
+}
