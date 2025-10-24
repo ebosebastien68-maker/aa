@@ -4,8 +4,15 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Connect pro</title>
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="theme-color" content="#007aff">
+    
+    <!-- Scripts externes -->
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
     <style>
         * {
             margin: 0;
@@ -1536,8 +1543,23 @@
         </div>
     </div>
 
+    <!-- Scripts externes -->
     <script src="supabaseClient.js"></script>
     <script src="commentaires.js"></script>
+    
+    <!-- Service Worker pour PWA -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', () => {
+                navigator.serviceWorker
+                    .register('./service-worker.js')
+                    .then(() => console.log('✅ Service Worker enregistré avec succès !'))
+                    .catch(error => console.error('❌ Erreur lors de l\'enregistrement du Service Worker :', error));
+            });
+        }
+    </script>
+    
+    <!-- Script principal -->
     <script>
         const { supabase, getCurrentUser, getUserProfile } = window.supabaseClient;
         let currentUser = null;
@@ -1659,7 +1681,6 @@
             if (currentUser) {
                 userProfile = await getUserProfile(currentUser.id);
                 
-                // Si le profil n'existe pas (connexion OAuth), le créer
                 if (!userProfile) {
                     await createOAuthProfile(currentUser);
                     userProfile = await getUserProfile(currentUser.id);
@@ -1676,14 +1697,11 @@
             initNavigation();
         });
 
-        // Créer le profil pour les utilisateurs OAuth
         async function createOAuthProfile(user) {
             try {
-                // Extraire le nom de l'email ou des métadonnées
                 let prenom = 'Utilisateur';
                 let nom = 'Nouveau';
 
-                // Vérifier les métadonnées du provider
                 if (user.user_metadata) {
                     if (user.user_metadata.full_name) {
                         const nameParts = user.user_metadata.full_name.split(' ');
@@ -1699,13 +1717,11 @@
                     }
                 }
 
-                // Si toujours pas de nom, utiliser l'email
                 if (prenom === 'Utilisateur' && nom === 'Nouveau' && user.email) {
                     prenom = user.email.split('@')[0];
                     nom = '';
                 }
 
-                // Créer le profil
                 const { data, error } = await supabase
                     .from('users_profile')
                     .insert({
@@ -1719,7 +1735,6 @@
 
                 if (error) {
                     console.error('Erreur création profil OAuth:', error);
-                    // Si le profil existe déjà, ce n'est pas grave
                     if (error.code !== '23505') {
                         throw error;
                     }
@@ -1731,7 +1746,6 @@
             }
         }
 
-        // Afficher la popup de bienvenue
         function showWelcomePopup() {
             if (!userProfile) return;
 
@@ -1739,22 +1753,18 @@
             const welcomePopup = document.getElementById('welcome-popup');
             const welcomeOverlay = document.getElementById('welcome-overlay');
 
-            // Définir le nom
             const fullName = `${userProfile.prenom} ${userProfile.nom}`.trim();
             welcomeName.textContent = fullName;
 
-            // Afficher la popup
             setTimeout(() => {
                 welcomeOverlay.classList.add('show');
                 welcomePopup.classList.add('show');
             }, 500);
 
-            // Cacher après 3 secondes
             setTimeout(() => {
                 welcomePopup.classList.add('hide');
                 welcomeOverlay.classList.remove('show');
                 
-                // Nettoyer après l'animation
                 setTimeout(() => {
                     welcomePopup.classList.remove('show', 'hide');
                 }, 500);
@@ -2370,21 +2380,6 @@
                 loadMessageCount();
             }
         }, 30000);
-        
-        <!-- Lien vers le manifeste PWA -->
-<link rel="manifest" href="manifest.json">
-<!-- Couleur de la barre de navigation mobile -->
-<meta name="theme-color" content="#007aff">
-<!-- Enregistrement du Service Worker -->
-<script>
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => {
-      navigator.serviceWorker
-        .register('./service-worker.js')
-        .then(() => console.log('✅ Service Worker enregistré avec succès !'))
-        .catch(error => console.error('❌ Erreur lors de l’enregistrement du Service Worker :', error));
-    });
-  }
-</script>
+    </script>
 </body>
-    </html>
+</html>
