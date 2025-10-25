@@ -1,7 +1,7 @@
 {
   "name": "ConnectPro",
-  "short_name": "ConnectPro",
-  "description": "La plateforme de messagerie professionnelle ConnectPro",
+  "short_name": "World Connect",
+  "description": "La plateforme isponible pour vos services Digitales",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
