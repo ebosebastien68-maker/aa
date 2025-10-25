@@ -1,7 +1,7 @@
 {
-  "name": "ConnectPro",
+  "name": "World Connect",
   "short_name": "World Connect",
-  "description": "La plateforme isponible pour vos services Digitales",
+  "description": "La plateforme disponible pour vos services Digitales",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#ffffff",
