@@ -1,5 +1,5 @@
 // Nom du cache (change-le pour forcer une mise à jour quand tu modifies ton site)
-const CACHE_NAME = "connectpro-cache-v1";
+const CACHE_NAME = "WorldConnect-cache-v1";
 
 // Liste des fichiers à mettre en cache
 const FILES_TO_CACHE = [
