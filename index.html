@@ -1677,6 +1677,14 @@
         };
 
         window.addEventListener('DOMContentLoaded', async () => {
+            // Vérifier si c'est une déconnexion manuelle
+            const manualLogout = sessionStorage.getItem('manualLogout');
+            if (manualLogout === 'true') {
+                sessionStorage.removeItem('manualLogout');
+                // Ne pas charger l'utilisateur, rester sur la page actuelle
+                return;
+            }
+
             currentUser = await getCurrentUser();
             if (currentUser) {
                 userProfile = await getUserProfile(currentUser.id);
@@ -1748,6 +1756,17 @@
 
         function showWelcomePopup() {
             if (!userProfile) return;
+
+            // Vérifier si le message de bienvenue a déjà été affiché pour cette session
+            const welcomeShown = sessionStorage.getItem('welcomeShown');
+            
+            // Si le message a déjà été affiché pendant cette session, ne pas l'afficher à nouveau
+            if (welcomeShown === 'true') {
+                return;
+            }
+
+            // Marquer que le message de bienvenue a été affiché pour cette session
+            sessionStorage.setItem('welcomeShown', 'true');
 
             const welcomeName = document.getElementById('welcome-name');
             const welcomePopup = document.getElementById('welcome-popup');
@@ -1850,10 +1869,16 @@
             document.getElementById('logout-item').addEventListener('click', async function(e) {
                 e.preventDefault();
                 try {
+                    // Supprimer le flag de bienvenue avant de se déconnecter
+                    sessionStorage.removeItem('welcomeShown');
                     await supabase.auth.signOut();
+                    // Empêcher la redirection automatique vers index.html
+                    sessionStorage.setItem('manualLogout', 'true');
                     window.location.href = 'connexion.html';
                 } catch (error) {
                     console.error('Erreur déconnexion:', error);
+                    sessionStorage.removeItem('welcomeShown');
+                    sessionStorage.setItem('manualLogout', 'true');
                     window.location.href = 'connexion.html';
                 }
             });
@@ -2146,9 +2171,9 @@
 
         function getArticleShareText(articleId) {
             const article = allArticles.find(a => a.article_id === articleId);
-            if (!article) return 'Découvrez cet article sur Connect PRO';
+            if (!article) return 'Découvrez cet article sur World Connect';
             const preview = article.texte.substring(0, 100) + (article.texte.length > 100 ? '...' : '');
-            return `${preview} - Connect PRO`;
+            return `${preview} - World Connect`;
         }
 
         function shareToFacebook(articleId) {
@@ -2186,7 +2211,7 @@
         function shareToMore(articleId) {
             if (navigator.share) {
                 navigator.share({
-                    title: 'Connect PRO',
+                    title: 'World Connect',
                     text: getArticleShareText(articleId),
                     url: getArticleShareUrl(articleId)
                 }).catch(err => console.log('Erreur de partage:', err));
