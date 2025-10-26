@@ -1103,4 +1103,3 @@ window.CommentsWidget = {
             submitBtn.innerHTML = '<div class="comment-spinner"></div> Publication...';
 
             // Envoyer à la base de données
-            const {
